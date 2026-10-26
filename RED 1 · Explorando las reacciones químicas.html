@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="description" content="RED 1 accesible de Química para grado décimo: reactivos, productos, lenguaje de ecuaciones y conservación de átomos. Funciona sin conexión.">
+<title>RED 1 · Explorando las reacciones químicas | IED El Parque</title>
+<style>
+:root{--ink:#132446;--muted:#52647b;--blue:#2649c6;--teal:#087b75;--yellow:#ffce47;--paper:#f5f8fc;--white:#fff;--line:#d7e1ec;--success:#126746;--warning:#754700;--danger:#9d3030;--ring:#ff8e3c;--scale:1;--radius:20px;--shadow:0 16px 42px rgba(25,46,94,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:calc(16px * var(--scale))}
+body{margin:0;min-height:100vh;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.64}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--ring);outline-offset:3px}
+.skip{position:absolute;z-index:1000;top:-90px;left:12px;background:#fff;color:#102a62;padding:12px 18px;border:2px solid #1d439a;border-radius:8px}
+.skip:focus{top:12px}
+.app{display:grid;grid-template-columns:minmax(255px,285px) minmax(0,1fr);min-height:100vh}
+.side{background:#112758;color:#fff;padding:27px 18px 30px;display:flex;flex-direction:column;gap:20px}
+.identity{display:flex;gap:11px;align-items:center;padding:4px 8px}
+.mark{flex:0 0 45px;height:45px;border-radius:13px;display:grid;place-items:center;background:var(--yellow);color:#162950;font-weight:900;font-size:1.05rem}
+.identity strong{display:block;font-size:.91rem;line-height:1.3}
+.identity small{display:block;color:#c4d5fb;font-size:.74rem;line-height:1.55}
+.side-label{font-size:.71rem;letter-spacing:.11em;text-transform:uppercase;color:#b8c9ec;font-weight:800;margin:8px 12px 0}
+.nav{display:grid;gap:5px}
+.nav button{width:100%;background:none;border:1px solid transparent;color:#e9f0ff;text-align:left;border-radius:12px;padding:10px 10px;display:flex;gap:10px;align-items:center;line-height:1.3;font-size:.89rem}
+.nav button:hover{background:#253d72}
+.nav button.active{background:#fff;color:#102758;font-weight:800}
+.nav button:focus-visible{outline-color:#ffce47}
+.nav .num{display:grid;place-items:center;flex:0 0 30px;height:30px;border:1px solid currentColor;border-radius:9px;font-size:.77rem;font-weight:800;opacity:.84}
+.nav button.active .num{background:#f4f7fc}
+.side-note{margin-top:auto;border:1px solid #3e5785;padding:14px;border-radius:13px;color:#dce8ff;font-size:.81rem}
+.side-note strong{color:#fff}
+.workspace{min-width:0}
+.topbar{background:#fff;border-bottom:1px solid var(--line);padding:15px clamp(18px,3.5vw,48px);display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.context{font-size:.76rem;color:#415674;font-weight:700;letter-spacing:.02em}
+.tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.control{min-height:40px;padding:6px 12px;border:1px solid #b9c9db;background:#fff;border-radius:10px;color:#172c4f;font-size:.82rem;font-weight:750}
+.control:hover{background:#eef4ff}
+.control[aria-pressed="true"]{background:#122955;color:#fff}
+.content{max-width:1060px;margin:0 auto;padding:clamp(20px,3.8vw,52px)}
+.kicker{font-size:.76rem;color:var(--blue);letter-spacing:.1em;text-transform:uppercase;font-weight:850;display:block;margin-bottom:7px}
+h1,h2,h3,p{margin-top:0}
+h1{font-size:clamp(1.75rem,3.3vw,2.9rem);line-height:1.18;letter-spacing:-.038em;margin-bottom:15px}
+h2{font-size:clamp(1.35rem,2.1vw,1.8rem);line-height:1.25;letter-spacing:-.02em}
+h3{font-size:1.08rem;line-height:1.32}
+p{max-width:75ch}
+.lead{font-size:1.08rem;color:#465d78;line-height:1.65}
+.accent{color:var(--blue)}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:clamp(18px,2.6vw,30px);box-shadow:0 4px 18px rgba(25,46,94,.03)}
+.card + .card{margin-top:18px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.grid.thirds{grid-template-columns:repeat(3,minmax(0,1fr))}
+.hero{background:linear-gradient(120deg,#153879 0%,#193b7c 62%,#146973 100%);color:#fff;border-radius:24px;padding:clamp(24px,4vw,42px);display:grid;grid-template-columns:1.1fr .9fr;gap:23px;align-items:center;overflow:hidden;box-shadow:var(--shadow)}
+.hero h1{color:#fff}
+.hero .lead{color:#e0edff}
+.hero .pill{border-color:#aec7f7;color:#fff}
+.mol-art{position:relative;min-height:255px;display:grid;place-items:center}
+.mol-bg{background:#ffffff11;border:1px solid #ffffff35;position:absolute;inset:12px;border-radius:22px;transform:rotate(-5deg)}
+.mol-copy{position:relative;color:#fff;display:grid;gap:12px;text-align:center}
+.mol-copy .chem-text{font-size:clamp(1.65rem,2.7vw,2.45rem);font-weight:850;letter-spacing:.015em;white-space:nowrap}
+.mol-copy .chem-text sub,.equation sub{font-size:.57em;vertical-align:sub}
+.mol-copy .tagline{color:#d9e8ff;font-weight:750;font-size:.83rem}
+.mol-art .bubble{position:absolute;border-radius:50%;background:#ffce47;opacity:.94}
+.mol-art .b1{width:18px;height:18px;top:20px;right:30px}
+.mol-art .b2{width:35px;height:35px;bottom:12px;left:22px;background:#44c8b5}
+.mol-art .b3{width:11px;height:11px;top:43px;left:21px;background:#cde4ff}
+.pill{display:inline-flex;padding:5px 11px;border:1px solid #b9cbe2;color:#24426b;border-radius:40px;font-size:.75rem;font-weight:800;margin:0 5px 8px 0}
+.goal{display:flex;gap:12px;align-items:flex-start}
+.goal .icon-circle{flex:0 0 39px;width:39px;height:39px;background:#e8f0ff;color:#2449b1;border-radius:11px;display:grid;place-items:center;font-weight:900}
+.goal p{margin-bottom:0;color:#4c6079;font-size:.91rem}
+.goal h3{margin-bottom:5px}
+.btn{min-height:45px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 18px;border:2px solid transparent;border-radius:12px;font-weight:800;line-height:1.32;text-align:center;text-decoration:none}
+.btn.primary{background:#2147c0;color:#fff}
+.btn.primary:hover{background:#173699}
+.btn.secondary{background:#fff;color:#193c87;border-color:#a7bade}
+.btn.secondary:hover{background:#f1f5ff}
+.btn.soft{background:#eaf5f4;color:#075e58;border-color:#abd9d4}
+.btn.soft:hover{background:#d7eeeb}
+.btn.danger{background:#fff;color:#862a2a;border-color:#efc8c8}
+.btn:disabled{cursor:not-allowed;opacity:.56}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:22px}
+.section-intro{margin-bottom:27px}
+.info{border-left:5px solid #24988c;background:#ebf7f6;padding:14px 18px;border-radius:0 12px 12px 0;color:#1d4b4b;margin:20px 0}
+.info.warning{border-color:#e9ab21;background:#fff8e4;color:#634c13}
+.info strong{display:block}
+.question-box{border:1px solid #cddced;border-radius:17px;padding:23px;background:#fff}
+fieldset{border:0;padding:0;margin:0;min-width:0}
+legend{font-size:1.15rem;font-weight:850;line-height:1.35;padding:0 0 14px}
+.choice{display:flex;align-items:flex-start;gap:12px;padding:13px 14px;border:1px solid #cbd7e8;border-radius:12px;background:#fff;margin:9px 0;cursor:pointer;line-height:1.42}
+.choice:hover{background:#f4f8ff}
+.choice:has(input:checked){background:#ebf1ff;border:2px solid #3156c1;padding:12px 13px}
+.choice input{flex:0 0 19px;width:19px;height:19px;margin:2px 0 0;accent-color:#1747b6}
+.feedback{margin-top:17px;padding:15px 17px;border:1px solid #bad8ca;border-radius:12px;background:#eff9f3;color:#174f38}
+.feedback.review{border-color:#ebcdaf;background:#fff8eb;color:#60451f}
+.feedback strong{display:block;margin-bottom:4px}
+.feedback[hidden],[hidden]{display:none!important}
+.token-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.token-grid .card{box-shadow:none}
+.definition{border-top:4px solid #2e57c9}
+.definition:nth-child(2){border-top-color:#0f8576}
+.definition:nth-child(3){border-top-color:#cc8e10}
+.eyebrow{color:#46617f;font-size:.74rem;font-weight:850;letter-spacing:.07em;text-transform:uppercase;margin-bottom:10px}
+.definition p{font-size:.91rem;margin-bottom:0}
+.example{background:#f0f5fc;border-radius:13px;padding:14px;margin-top:13px}
+.equation{font-weight:850;font-size:clamp(1.55rem,3.5vw,2.55rem);line-height:1.55;letter-spacing:.01em;text-align:center;white-space:nowrap;color:#152b58;margin:14px auto}
+.equation.small{font-size:1.35rem;margin:8px 0}
+.chem-panel{background:#eef3ff;border:1px solid #d8e3ff;border-radius:19px;padding:24px;position:relative}
+.chem-panel .equation{margin:20px auto 10px}
+.chem-key{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.chem-key>div{background:#fff;border:1px solid #d6e0ed;border-radius:12px;padding:13px}
+.chem-key span{display:block;color:#536984;font-size:.78rem}
+.chem-key strong{display:block;margin-top:4px}
+.learning-card{border:1px solid var(--line);padding:20px;border-radius:16px;background:#fff}
+.learning-card .count{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:9px;background:#ecf2ff;color:#264ac1;font-weight:900;margin-bottom:10px}
+.learning-card p{font-size:.91rem;color:#53657c;margin-bottom:0}
+.explore-controls{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}
+.explore-controls button[aria-pressed="true"]{background:#1747be;color:#fff;border-color:#1747be}
+.explanation{min-height:92px;background:#fff;border:1px solid #c9d8ee;padding:17px 20px;border-radius:14px}
+.explanation strong{display:block}
+.atom-table{width:100%;border-collapse:collapse;text-align:left;font-size:.94rem;margin-top:10px}
+.atom-table th,.atom-table td{padding:13px;border-bottom:1px solid #d9e3ef}
+.atom-table th{background:#edf3fc;font-size:.84rem}
+.atom-table caption{text-align:left;font-weight:800;padding:0 0 9px}
+.statline{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:15px 0}
+.progress{height:12px;border-radius:40px;background:#d9e4f3;overflow:hidden;flex:1;min-width:100px}
+.progress>div{width:0%;height:100%;background:#087b75;transition:width .2s ease}
+.quiz-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.question-no{display:inline-block;background:#edf3ff;color:#1e3e9b;border-radius:30px;padding:5px 12px;font-size:.79rem;font-weight:850}
+.quiz-hint{background:#fff9e9;border:1px solid #eed8a5;color:#604819;border-radius:12px;padding:13px;margin-top:15px}
+.review-list{display:grid;gap:12px}
+.review-item{background:#fff;border:1px solid #d7e3ed;padding:16px 18px;border-radius:14px}
+.review-item strong{display:block}
+.review-item p{color:#53637b;margin:6px 0 0;font-size:.9rem}
+.status{display:inline-block;padding:4px 10px;background:#edf4ff;border-radius:30px;color:#18449d;font-size:.73rem;font-weight:800}
+.status.done{color:#125a42;background:#e3f5ee}
+.checkline{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #dce5ee}
+.checkline input{margin:5px 0 0;width:19px;height:19px;accent-color:#2147c0}
+textarea{display:block;width:100%;min-height:130px;resize:vertical;border:1.5px solid #a9bdd3;border-radius:12px;padding:14px;color:#172f52;background:#fff}
+label[for="reflection"]{font-weight:850;display:block;margin:25px 0 7px}
+.minor{color:#536983;font-size:.86rem}
+.bottom-controls{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);margin-top:31px;padding-top:23px}
+footer{max-width:1060px;margin:0 auto;padding:0 clamp(20px,3.8vw,52px) 35px;color:#657790;font-size:.78rem}
+footer details{margin-top:7px}
+footer summary{cursor:pointer}
+body.high-contrast{--ink:#050e1e;--muted:#263d54;--blue:#0c2d88;--teal:#00554f;--paper:#fff;--line:#57738d;--success:#064726;--ring:#ff6600}
+body.high-contrast .side{background:#071933}
+body.high-contrast .lead{color:#243e60}
+body.high-contrast .hero .lead{color:#fff}
+body.high-contrast .choice{border-width:2px}
+body.high-contrast .card{border-width:2px}
+body.plain-view .hero{background:#fff;color:var(--ink);border:2px solid var(--line);box-shadow:none}
+body.plain-view .hero h1{color:var(--ink)}
+body.plain-view .hero .lead{color:var(--muted)}
+body.plain-view .mol-art{display:none}
+body.plain-view .hero{grid-template-columns:1fr}
+body.plain-view .hero .pill{color:var(--ink);border-color:var(--line)}
+body.plain-view .card{box-shadow:none}
+/* Progreso guiado: estados perceptibles sin depender solo del color */
+.stage-meter{padding:15px 13px;border:1px solid #516a9d;border-radius:14px;background:#1c3567;color:#fff}
+.stage-meter .statline{margin:5px 0 8px}
+.stage-meter .progress{background:#3e5683}
+.stage-meter .progress>div{background:#ffcf53}
+.stage-meter .minor{color:#dae6ff;margin:9px 0 0;font-size:.76rem}
+.nav button.locked{opacity:.74;border-color:#365184}
+.nav button.locked:hover{background:#253d72}
+.nav button.finished:not(.active){border-color:#456b8e;color:#d7f8e3}
+.nav button .stage-state{margin-left:auto;font-size:.7rem;white-space:nowrap;font-weight:800}
+.gate-notice{padding:15px 20px;margin:12px clamp(18px,3.5vw,48px) 0;background:#fff4d7;border:2px solid #b07c18;border-radius:12px;color:#513400}
+.gate-notice strong{display:block}
+.gate-hint{margin-top:13px;padding:11px 14px;border:1px solid #bed1e6;background:#f0f5ff;color:#1e3a6b;border-radius:10px;font-size:.92rem}
+.mini-check{margin-top:19px;border:2px solid #a9bfdb;background:#f6f9ff;border-radius:16px;padding:19px}
+.mini-check legend{font-size:1rem}
+.inline-ack{margin-top:15px;display:flex;align-items:flex-start;gap:10px}
+.inline-ack input{width:20px;height:20px;flex:0 0 20px;margin-top:5px}
+@media(max-width:990px){.nav button .stage-state{margin-left:4px}.stage-meter{padding:12px 14px}.stage-meter .progress{min-width:100px}}
+@media(max-width:990px){.app{grid-template-columns:1fr}.side{padding:15px 18px;gap:10px}.side-note{display:none}.identity{padding:0}.side-label{margin:1px 0}.nav{display:flex;gap:7px;overflow-x:auto;scrollbar-width:thin;padding-bottom:6px}.nav button{width:auto;white-space:nowrap;padding:9px 10px;flex-shrink:0}.nav .num{flex-basis:27px;height:27px}.content{padding:24px 22px}}
+@media(max-width:720px){.hero{grid-template-columns:1fr}.mol-art{min-height:150px}.mol-bg{inset:0}.grid,.grid.thirds,.token-grid,.chem-key{grid-template-columns:1fr}.topbar{padding:14px 18px}.topbar .context{width:100%}.content{padding:24px 16px}.equation{font-size:1.7rem}.hero{padding:25px}.mol-copy .chem-text{font-size:1.85rem}.atom-table th,.atom-table td{padding:9px}}
+@media(max-width:360px){.equation{font-size:1.4rem}.mol-copy .chem-text{font-size:1.6rem}.control{padding:6px 8px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@media print{.side,.topbar,.bottom-controls,.actions,.btn,.explore-controls,.skip{display:none!important}.app{display:block}.content{max-width:none;padding:0 16px}.screen[hidden]{display:block!important;break-before:page}.screen{break-inside:avoid}.hero{color:#111;background:#fff;border:1px solid #888;box-shadow:none}.hero h1,.hero .lead{color:#111}.mol-art{display:none}.card{box-shadow:none}footer{padding:8px 16px}}
+</style>
+<style>.illus{display:block;width:100%;height:auto;margin:12px auto}@keyframes illusPulse{0%,100%{opacity:.45}50%{opacity:1}}.illus .pulse{animation:illusPulse 2.4s ease-in-out infinite}.app>*{min-width:0}.side{min-width:0;max-width:100vw}</style></head>
+<body>
+<a class="skip" href="#main">Saltar al contenido principal</a>
+<div class="app">
+  <aside class="side" aria-label="Navegación del recurso">
+    <div class="identity"><div class="mark" aria-hidden="true">Q10</div><div><strong>Explorando las reacciones químicas</strong><small>RED 1 · IED El Parque</small></div></div>
+    <div class="side-label">Recorrido de aprendizaje</div>
+    <nav class="nav" aria-label="Etapas del recurso" id="stageNav">
+      <button type="button" class="active" data-screen="a0" aria-current="step"><span class="num" aria-hidden="true">A0</span>Inicio</button>
+      <button type="button" data-screen="a1"><span class="num" aria-hidden="true">A1</span>Antes de empezar</button>
+      <button type="button" data-screen="a2"><span class="num" aria-hidden="true">A2</span>Conceptos</button>
+      <button type="button" data-screen="a3"><span class="num" aria-hidden="true">A3</span>Lenguaje químico</button>
+      <button type="button" data-screen="a4"><span class="num" aria-hidden="true">A4</span>Práctica guiada</button>
+      <button type="button" data-screen="a5"><span class="num" aria-hidden="true">A5</span>Mis avances</button>
+      <button type="button" data-screen="a6"><span class="num" aria-hidden="true">A6</span>Cierre</button>
+    </nav>
+    <div class="stage-meter" aria-label="Avance por etapas"><div class="statline"><strong>Mi recorrido guiado</strong><span id="stageCounter">0 de 7</span></div><div class="progress" id="stageProgress" role="progressbar" aria-label="Etapas de aprendizaje completadas" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0"><div id="stageProgressFill"></div></div><p id="stageHint" class="minor">Comienza para desbloquear la primera actividad.</p></div>
+    <div class="side-note"><strong>Aprender sin prisa</strong><br>Las etapas avanzan al realizar sus actividades esenciales, no al acertar todas. Puedes consultar cualquier etapa ya desbloqueada, pedir pistas y volver a intentarlo.</div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar">
+      <div class="context">CIENCIAS NATURALES <span aria-hidden="true">·</span> QUÍMICA 10.º <span aria-hidden="true">·</span> UNIDAD 3</div>
+      <div class="tools" role="group" aria-label="Preferencias de accesibilidad">
+        <button type="button" class="control" id="smaller" aria-label="Reducir tamaño del texto" title="Reducir tamaño del texto">A−</button>
+        <button type="button" class="control" id="larger" aria-label="Aumentar tamaño del texto" title="Aumentar tamaño del texto">A+</button>
+        <button type="button" class="control" id="contrast" aria-pressed="false">Alto contraste</button>
+        <button type="button" class="control" id="plain" aria-pressed="false">Vista simple</button>
+      </div>
+    </header>
+    <div id="navigationNotice" class="gate-notice" role="status" tabindex="-1" hidden></div>
+    <main class="content" id="main" tabindex="-1">
+      <div id="screen-a0" class="screen">
+        <div class="hero">
+          <div>
+            <span class="pill">RED 1 · Exploración y comprensión</span>
+            <span class="kicker" style="color:#fce27f">Bienvenida · A0</span>
+            <h1>La química cambia la materia. <span style="color:#ffdb6d">Tú puedes explicar cómo.</span></h1>
+            <p class="lead">Descubre cómo leer una reacción química, reconocer sus partes y comprender por qué los átomos se conservan.</p>
+            <div class="actions"><button type="button" class="btn primary" data-go="a1" style="background:#ffce47;color:#162a4d">Comenzar el recorrido <span aria-hidden="true">→</span></button></div>
+          </div>
+          <div class="mol-art" aria-hidden="true"><div class="mol-bg"></div><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="mol-copy"><div class="chem-text">2 H<sub>2</sub> + O<sub>2</sub></div><div style="font-size:2rem">↓</div><div class="chem-text">2 H<sub>2</sub>O</div><div class="tagline">REACTIVOS → PRODUCTOS</div></div></div>
+        </div>
+        <div class="section-intro" style="margin-top:32px"><h2>¿Qué podrás aprender?</h2><p class="lead">Cuatro metas claras, actividades cortas y ayudas que puedes activar cuando las necesites.</p></div>
+        <div class="grid">
+          <div class="card goal"><div class="icon-circle" aria-hidden="true">01</div><div><h3>Reconocer</h3><p>Distinguir un cambio químico de un cambio físico en ejemplos sencillos.</p></div></div>
+          <div class="card goal"><div class="icon-circle" aria-hidden="true">02</div><div><h3>Identificar</h3><p>Señalar reactivos, productos, coeficientes y subíndices.</p></div></div>
+          <div class="card goal"><div class="icon-circle" aria-hidden="true">03</div><div><h3>Interpretar</h3><p>Leer una ecuación química e identificar qué representa cada símbolo.</p></div></div>
+          <div class="card goal"><div class="icon-circle" aria-hidden="true">04</div><div><h3>Explicar</h3><p>Relacionar el conteo de átomos con la conservación de la materia.</p></div></div>
+        </div>
+        <div class="info"><strong>Elige cómo aprender</strong>Puedes aumentar el texto, activar alto contraste y usar vista simple. No necesitas escuchar audio, arrastrar objetos ni mantener conexión a internet.</div>
+      </div>
+      <section id="screen-a1" class="screen" hidden aria-labelledby="title-a1">
+        <div class="section-intro"><span class="kicker">A1 · Activación</span><h1 id="title-a1" tabindex="-1">Antes de empezar</h1><p class="lead">¿Qué sabes sobre las transformaciones de la materia? Responde sin presión. Estas dos preguntas son diagnósticas y no tienen nota.</p></div>
+        <div class="grid">
+          <form class="question-box" id="diagnostic-ice">
+            <fieldset><legend>1. El hielo se derrite y se convierte en agua líquida. ¿Qué tipo de cambio ocurre?</legend>
+              <label class="choice"><input type="radio" name="ice" value="physical"><span>Un cambio físico.</span></label>
+              <label class="choice"><input type="radio" name="ice" value="chemical"><span>Un cambio químico.</span></label>
+            </fieldset>
+            <button class="btn secondary" type="submit">Comprobar y aprender</button>
+            <div id="ice-feedback" class="feedback" role="status" aria-live="polite" hidden></div>
+          </form>
+          <form class="question-box" id="diagnostic-rust">
+            <fieldset><legend>2. Un objeto de hierro forma herrumbre al reaccionar con el oxígeno y la humedad. ¿Qué cambio ocurre?</legend>
+              <label class="choice"><input type="radio" name="rust" value="chemical"><span>Un cambio químico.</span></label>
+              <label class="choice"><input type="radio" name="rust" value="physical"><span>Solo un cambio físico.</span></label>
+            </fieldset>
+            <button class="btn secondary" type="submit">Comprobar y aprender</button>
+            <div id="rust-feedback" class="feedback" role="status" aria-live="polite" hidden></div>
+          </form>
+        </div>
+        <div class="info warning"><strong>Idea esencial</strong>En un cambio físico no aparece una sustancia nueva; en una reacción química, los reactivos se transforman en productos con composición diferente. Las señales visuales pueden orientar, pero no siempre bastan para demostrar que ocurrió una reacción.</div>
+        <p id="diagnosticHint" class="gate-hint" role="status">Responde y comprueba las dos preguntas para desbloquear los conceptos. Puedes equivocarte: es un diagnóstico sin calificación.</p>
+        <div class="bottom-controls"><button class="btn secondary" type="button" data-go="a0">← Volver al inicio</button><button class="btn primary" type="button" data-go="a2">Estudiar los conceptos →</button></div>
+      </section>
+      <section id="screen-a2" class="screen" hidden aria-labelledby="title-a2">
+        <div class="section-intro"><span class="kicker">A2 · Comprensión</span><h1 id="title-a2" tabindex="-1">Las tres ideas fundamentales</h1><p class="lead">Con estas ideas podrás comenzar a leer cualquier ecuación química sencilla.</p></div>
+        <div class="token-grid">
+          <article class="card definition"><div class="eyebrow">Antes de reaccionar</div><h2>Reactivos</h2><svg class="illus" role="img" aria-labelledby="r1re-t r1re-d" viewBox="0 0 260 84" style="max-width:260px"><title id="r1re-t">Reactivos de la formación de agua</title><desc id="r1re-d">Dos moléculas de hidrógeno más una molécula de oxígeno.</desc><rect x="1" y="1" width="258" height="82" rx="12" fill="#fff" stroke="#c7d3ec"/><circle cx="40" cy="30" r="12" fill="#eaf1ff" stroke="#112758" stroke-width="1.6"/><text x="40" y="33.78" text-anchor="middle" font-size="11" font-weight="700" fill="#112758">H</text><circle cx="60" cy="30" r="12" fill="#eaf1ff" stroke="#112758" stroke-width="1.6"/><text x="60" y="33.78" text-anchor="middle" font-size="11" font-weight="700" fill="#112758">H</text><circle cx="40" cy="62" r="12" fill="#eaf1ff" stroke="#112758" stroke-width="1.6"/><text x="40" y="65.78" text-anchor="middle" font-size="11" font-weight="700" fill="#112758">H</text><circle cx="60" cy="62" r="12" fill="#eaf1ff" stroke="#112758" stroke-width="1.6"/><text x="60" y="65.78" text-anchor="middle" font-size="11" font-weight="700" fill="#112758">H</text><text x="95" y="52" text-anchor="middle" font-size="22" font-weight="700" fill="#112758">+</text><circle cx="122" cy="46" r="16" fill="#ffd9d2" stroke="#112758" stroke-width="1.6"/><text x="122" y="51.04" text-anchor="middle" font-size="14" font-weight="700" fill="#112758">O</text><circle cx="150" cy="46" r="16" fill="#ffd9d2" stroke="#112758" stroke-width="1.6"/><text x="150" y="51.04" text-anchor="middle" font-size="14" font-weight="700" fill="#112758">O</text><text x="214" y="51" text-anchor="middle" font-size="12" font-weight="500" fill="#112758">a la izquierda</text></svg><p>Son las sustancias de partida que participan en una reacción química. Se escriben a la <strong>izquierda</strong> de la flecha.</p><div class="example"><strong>Ejemplo:</strong> hidrógeno (H₂) y oxígeno (O₂).</div></article>
+          <article class="card definition"><div class="eyebrow">Después de reaccionar</div><h2>Productos</h2><svg class="illus" role="img" aria-labelledby="r1pr-t r1pr-d" viewBox="0 0 260 84" style="max-width:260px"><title id="r1pr-t">Producto de la formación de agua</title><desc id="r1pr-d">Dos moléculas de agua.</desc><rect x="1" y="1" width="258" height="82" rx="12" fill="#fff" stroke="#c7d3ec"/><circle cx="48" cy="44" r="11" fill="#eaf1ff" stroke="#112758" stroke-width="1.6"/><text x="48" y="47.465" text-anchor="middle" font-size="10" font-weight="700" fill="#112758">H</text><circle cx="92" cy="44" r="11" fill="#eaf1ff" stroke="#112758" stroke-width="1.6"/><text x="92" y="47.465" text-anchor="middle" font-size="10" font-weight="700" fill="#112758">H</text><circle cx="70" cy="22" r="16" fill="#ffd9d2" stroke="#112758" stroke-width="1.6"/><text x="70" y="27.04" text-anchor="middle" font-size="14" font-weight="700" fill="#112758">O</text><circle cx="128" cy="44" r="11" fill="#eaf1ff" stroke="#112758" stroke-width="1.6"/><text x="128" y="47.465" text-anchor="middle" font-size="10" font-weight="700" fill="#112758">H</text><circle cx="172" cy="44" r="11" fill="#eaf1ff" stroke="#112758" stroke-width="1.6"/><text x="172" y="47.465" text-anchor="middle" font-size="10" font-weight="700" fill="#112758">H</text><circle cx="150" cy="22" r="16" fill="#ffd9d2" stroke="#112758" stroke-width="1.6"/><text x="150" y="27.04" text-anchor="middle" font-size="14" font-weight="700" fill="#112758">O</text><text x="228" y="51" text-anchor="middle" font-size="12" font-weight="500" fill="#112758">a la derecha</text></svg><p>Son las sustancias que se forman durante la reacción. Se escriben a la <strong>derecha</strong> de la flecha.</p><div class="example"><strong>Ejemplo:</strong> agua (H₂O).</div></article>
+          <article class="card definition"><div class="eyebrow">Regla que siempre se cumple</div><h2>Conservación</h2><svg class="illus" role="img" aria-labelledby="r1co-t r1co-d" viewBox="0 0 300 120" style="max-width:300px"><title id="r1co-t">Balanza de conservación de átomos</title><desc id="r1co-d">Una balanza equilibrada: a cada lado hay 4 átomos de hidrógeno y 2 de oxígeno.</desc><rect x="1" y="1" width="298" height="118" rx="12" fill="#fff" stroke="#c7d3ec"/><line x1="40" y1="45" x2="260" y2="45" stroke="#112758" stroke-width="4"/><polygon points="150,45 132,100 168,100" fill="#eaf1ff" stroke="#112758" stroke-width="2"/><rect x="20" y="52" width="100" height="34" rx="8" fill="#fff" stroke="#112758" stroke-width="2"/><rect x="180" y="52" width="100" height="34" rx="8" fill="#fff" stroke="#112758" stroke-width="2"/><text x="70" y="74" text-anchor="middle" font-size="14" font-weight="700" fill="#112758">4 H · 2 O</text><text x="230" y="74" text-anchor="middle" font-size="14" font-weight="700" fill="#112758">4 H · 2 O</text><text x="150" y="28" text-anchor="middle" font-size="26" font-weight="700" fill="#112758">=</text><text x="150" y="114" text-anchor="middle" font-size="12" font-weight="500" fill="#112758">Se conservan los átomos</text></svg><p>En una ecuación balanceada hay igual número de átomos de <strong>cada elemento</strong> en ambos lados.</p><div class="example"><strong>Ejemplo:</strong> 4 átomos de H y 2 de O en cada lado.</div></article>
+        </div>
+        <div class="card" style="margin-top:19px">
+          <h2>Observa una reacción representada con símbolos</h2>
+          <p>La formación de agua se puede representar mediante esta ecuación balanceada:</p>
+          <div class="chem-panel"><div class="equation" role="img" aria-label="Dos moléculas de hidrógeno más una molécula de oxígeno producen dos moléculas de agua">2 H<sub>2</sub> + O<sub>2</sub> <span aria-hidden="true">→</span> 2 H<sub>2</sub>O</div></div>
+          <svg class="illus" role="img" aria-labelledby="r1m-t r1m-d" viewBox="0 0 640 200" style="max-width:640px"><title id="r1m-t">Modelo de partículas de la formación de agua</title><desc id="r1m-d">Dos moléculas de hidrógeno (cada una con dos átomos H) y una molécula de oxígeno (dos átomos O) producen dos moléculas de agua (cada una con un átomo O y dos átomos H). En ambos lados hay 4 átomos de H y 2 de O.</desc><rect x="1" y="1" width="638" height="198" rx="12" fill="#fff" stroke="#c7d3ec"/><circle cx="50" cy="55" r="12" fill="#eaf1ff" stroke="#112758" stroke-width="1.6"/><text x="50" y="58.78" text-anchor="middle" font-size="11" font-weight="700" fill="#112758">H</text><circle cx="70" cy="55" r="12" fill="#eaf1ff" stroke="#112758" stroke-width="1.6"/><text x="70" y="58.78" text-anchor="middle" font-size="11" font-weight="700" fill="#112758">H</text><circle cx="50" cy="105" r="12" fill="#eaf1ff" stroke="#112758" stroke-width="1.6"/><text x="50" y="108.78" text-anchor="middle" font-size="11" font-weight="700" fill="#112758">H</text><circle cx="70" cy="105" r="12" fill="#eaf1ff" stroke="#112758" stroke-width="1.6"/><text x="70" y="108.78" text-anchor="middle" font-size="11" font-weight="700" fill="#112758">H</text><text x="105" y="86" text-anchor="middle" font-size="22" font-weight="700" fill="#112758">+</text><circle cx="150" cy="80" r="16" fill="#ffd9d2" stroke="#112758" stroke-width="1.6"/><text x="150" y="85.04" text-anchor="middle" font-size="14" font-weight="700" fill="#112758">O</text><circle cx="178" cy="80" r="16" fill="#ffd9d2" stroke="#112758" stroke-width="1.6"/><text x="178" y="85.04" text-anchor="middle" font-size="14" font-weight="700" fill="#112758">O</text><g class="pulse"><line x1="225" y1="80" x2="297" y2="80" stroke="#112758" stroke-width="3"/><polygon points="305,80 293,73 293,87" fill="#112758"/></g><circle cx="368" cy="84" r="11" fill="#eaf1ff" stroke="#112758" stroke-width="1.6"/><text x="368" y="87.465" text-anchor="middle" font-size="10" font-weight="700" fill="#112758">H</text><circle cx="412" cy="84" r="11" fill="#eaf1ff" stroke="#112758" stroke-width="1.6"/><text x="412" y="87.465" text-anchor="middle" font-size="10" font-weight="700" fill="#112758">H</text><circle cx="390" cy="62" r="16" fill="#ffd9d2" stroke="#112758" stroke-width="1.6"/><text x="390" y="67.04" text-anchor="middle" font-size="14" font-weight="700" fill="#112758">O</text><circle cx="458" cy="84" r="11" fill="#eaf1ff" stroke="#112758" stroke-width="1.6"/><text x="458" y="87.465" text-anchor="middle" font-size="10" font-weight="700" fill="#112758">H</text><circle cx="502" cy="84" r="11" fill="#eaf1ff" stroke="#112758" stroke-width="1.6"/><text x="502" y="87.465" text-anchor="middle" font-size="10" font-weight="700" fill="#112758">H</text><circle cx="480" cy="62" r="16" fill="#ffd9d2" stroke="#112758" stroke-width="1.6"/><text x="480" y="67.04" text-anchor="middle" font-size="14" font-weight="700" fill="#112758">O</text><text x="60" y="150" text-anchor="middle" font-size="14" font-weight="700" fill="#112758">2 H₂</text><text x="164" y="150" text-anchor="middle" font-size="14" font-weight="700" fill="#112758">O₂</text><text x="435" y="150" text-anchor="middle" font-size="14" font-weight="700" fill="#112758">2 H₂O</text><text x="110" y="184" text-anchor="middle" font-size="14" font-weight="500" fill="#112758">Reactivos: 4 H · 2 O</text><text x="440" y="184" text-anchor="middle" font-size="14" font-weight="500" fill="#112758">Productos: 4 H · 2 O</text></svg><div class="chem-key" style="margin-top:13px"><div><span>Reactivos (izquierda)</span><strong>2 H₂ y O₂</strong></div><div><span>Productos (derecha)</span><strong>2 H₂O</strong></div></div>
+          <p class="minor" style="margin-top:15px">Esta ecuación es un modelo simbólico de la reacción. No es una invitación a mezclar gases ni a realizar experimentos caseros.</p>
+        </div>
+        <details class="card" style="margin-top:18px"><summary style="font-weight:850;cursor:pointer">Glosario de apoyo: cuatro palabras útiles</summary><dl><dt><strong>Elemento químico</strong></dt><dd>Tipo de átomo, como H (hidrógeno) u O (oxígeno).</dd><dt><strong>Molécula</strong></dt><dd>Conjunto de átomos unidos químicamente, como H₂O.</dd><dt><strong>Ecuación química</strong></dt><dd>Representación simbólica de reactivos y productos.</dd><dt><strong>Balancear</strong></dt><dd>Ajustar coeficientes para conservar el número de átomos de cada elemento.</dd></dl></details>
+        <form id="conceptCheck" class="mini-check"><fieldset><legend>Comprobación esencial: ¿dónde se escriben los productos de una reacción química?</legend><label class="choice"><input type="radio" name="conceptAnswer" value="left"><span>A la izquierda de la flecha.</span></label><label class="choice"><input type="radio" name="conceptAnswer" value="right"><span>A la derecha de la flecha.</span></label></fieldset><button type="submit" class="btn primary">Comprobar y revisar la explicación</button><div id="conceptFeedback" class="feedback" aria-live="polite" role="status" hidden></div><p class="minor">Un intento con retroalimentación es suficiente para avanzar, aunque la respuesta sea incorrecta.</p></form>
+        <div class="bottom-controls"><button class="btn secondary" data-go="a1" type="button">← Volver</button><button class="btn primary" data-go="a3" type="button">Interpretar símbolos →</button></div>
+      </section>
+      <section id="screen-a3" class="screen" hidden aria-labelledby="title-a3">
+        <div class="section-intro"><span class="kicker">A3 · Lenguaje químico</span><h1 id="title-a3" tabindex="-1">Cada símbolo nos cuenta algo</h1><p class="lead">Explora las partes de la ecuación utilizando los botones. La información también se presenta en texto para no depender del color.</p></div>
+        <div class="card">
+          <div class="chem-panel"><div class="equation" role="img" aria-label="Dos moléculas de H dos más una molécula de O dos producen dos moléculas de H dos O">2 H<sub>2</sub> + O<sub>2</sub> → 2 H<sub>2</sub>O</div><p class="minor" style="text-align:center;margin-bottom:0">Ejemplo de formación de agua, expresado como ecuación balanceada.</p></div>
+          <div class="explore-controls" role="group" aria-label="Partes de una ecuación">
+            <button class="control" type="button" data-part="reactives" aria-pressed="true">Reactivos</button>
+            <button class="control" type="button" data-part="products" aria-pressed="false">Productos</button>
+            <button class="control" type="button" data-part="coefficient" aria-pressed="false">Coeficiente</button>
+            <button class="control" type="button" data-part="subscript" aria-pressed="false">Subíndice</button>
+            <button class="control" type="button" data-part="arrow" aria-pressed="false">Flecha</button>
+          </div>
+          <div class="explanation" id="partExplanation" role="status" aria-live="polite"><strong>Reactivos</strong>En este ejemplo son 2 H₂ y O₂. Aparecen a la izquierda de la flecha; representan las sustancias que reaccionan.</div>
+        </div>
+        <div class="card" style="margin-top:18px"><h2>Comprueba el número de átomos</h2><p>El coeficiente multiplica toda la fórmula. Por eso, en <strong>2 H₂O</strong> tenemos dos moléculas de agua, con cuatro átomos de hidrógeno y dos de oxígeno en total.</p>
+          <table class="atom-table"><caption>Conteo de átomos en 2 H₂ + O₂ → 2 H₂O</caption><thead><tr><th scope="col">Elemento</th><th scope="col">Reactivos</th><th scope="col">Productos</th></tr></thead><tbody><tr><th scope="row">Hidrógeno (H)</th><td>2 × 2 = <strong>4</strong></td><td>2 × 2 = <strong>4</strong></td></tr><tr><th scope="row">Oxígeno (O)</th><td>1 × 2 = <strong>2</strong></td><td>2 × 1 = <strong>2</strong></td></tr></tbody></table>
+          <div class="info"><strong>Conclusión científica</strong>La ecuación está balanceada: el número de átomos de hidrógeno y de oxígeno coincide a ambos lados de la flecha. Los átomos se reorganizan, no desaparecen.</div>
+        </div>
+        <form id="symbolCheck" class="mini-check"><fieldset><legend>Comprobación esencial: en 2 H₂O, ¿qué significa el 2 situado delante de H₂O?</legend><label class="choice"><input type="radio" name="symbolAnswer" value="molecules"><span>Dos moléculas de agua.</span></label><label class="choice"><input type="radio" name="symbolAnswer" value="atoms"><span>Dos átomos de oxígeno por molécula.</span></label></fieldset><button type="submit" class="btn primary">Comprobar y revisar la explicación</button><div id="symbolFeedback" class="feedback" role="status" aria-live="polite" hidden></div><p id="symbolHint" class="minor">Explora primero al menos tres partes de la ecuación y responde la pregunta para continuar. Los cinco botones siguen disponibles.</p></form>
+        <div class="bottom-controls"><button class="btn secondary" data-go="a2" type="button">← Volver</button><button class="btn primary" data-go="a4" type="button">Practicar con ayudas →</button></div>
+      </section>
+      <section id="screen-a4" class="screen" hidden aria-labelledby="title-a4">
+        <div class="section-intro"><span class="kicker">A4 · Práctica guiada</span><h1 id="title-a4" tabindex="-1">Tu turno: observa, decide y aprende</h1><p class="lead">Siete retos en orden. Para avanzar, responde cada reto y revisa su retroalimentación. Puedes acertar, volver a intentar o continuar después de leer una explicación de tu error; no hay penalización.</p></div>
+        <div class="statline"><strong id="quizCount">0 de 7 retos completados</strong><div class="progress" role="progressbar" aria-label="Progreso en la práctica" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0" id="quizProgress"><div id="quizProgressFill"></div></div></div>
+        <div class="card">
+          <div class="quiz-top"><span class="question-no" id="questionNumber">Reto 1 de 7</span><span class="status" id="questionStatus">Por realizar</span></div>
+          <form id="quizForm"><fieldset id="quizFieldset"><legend id="quizLegend">Cargando pregunta...</legend><div id="quizOptions"></div></fieldset><div class="actions"><button type="submit" class="btn primary" id="checkAnswer">Comprobar respuesta</button><button type="button" class="btn secondary" id="showHint" aria-expanded="false" aria-controls="hintPanel">Necesito una pista</button></div></form>
+          <div class="quiz-hint" id="hintPanel" hidden></div>
+          <div class="feedback" id="quizFeedback" role="status" aria-live="polite" hidden></div>
+          <button type="button" class="btn soft" id="ackExplanation" hidden>He revisado la explicación: completar este reto</button>
+          <p id="questionGateHint" class="gate-hint" role="status">Responde este reto y revisa la explicación antes de avanzar.</p>
+          <div class="bottom-controls"><button type="button" class="btn secondary" id="prevQuestion">← Reto anterior</button><button type="button" class="btn primary" id="nextQuestion">Siguiente reto →</button></div>
+        </div>
+        <div class="info"><strong>Recuerda</strong>Equivocarte forma parte del aprendizaje. Puedes consultar las secciones Conceptos y Lenguaje químico en cualquier momento y regresar aquí.</div>
+      </section>
+      <section id="screen-a5" class="screen" hidden aria-labelledby="title-a5">
+        <div class="section-intro"><span class="kicker">A5 · Retroalimentación</span><h1 id="title-a5" tabindex="-1">Revisa tu avance</h1><p class="lead">Revisa tu recorrido y distingue participación de dominio conceptual. Un reto puede estar completado por haber revisado la explicación, incluso si no acertaste.</p></div>
+        <div class="card"><h2 id="reviewHeading">Tu recorrido</h2><p id="reviewSummary">Puedes regresar a los retos cuantas veces necesites.</p><div class="statline"><strong id="reviewCounter">0 / 7</strong><div class="progress" role="progressbar" aria-label="Progreso total" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0" id="reviewProgress"><div id="reviewProgressFill"></div></div></div></div>
+        <div class="review-list" id="reviewList" style="margin-top:18px"></div>
+        <div class="mini-check"><p><strong>Para continuar:</strong> revisa el resumen de tus siete retos y confirma que has consultado sus explicaciones.</p><button type="button" class="btn primary" id="confirmReview">He revisado mis resultados</button><div class="feedback" id="reviewFeedback" role="status" aria-live="polite" hidden></div></div>
+        <div class="bottom-controls"><button class="btn secondary" type="button" data-go="a4">← Volver a practicar</button><button class="btn primary" type="button" data-go="a6">Hacer mi autoevaluación →</button></div>
+      </section>
+      <section id="screen-a6" class="screen" hidden aria-labelledby="title-a6">
+        <div class="section-intro"><span class="kicker">A6 · Síntesis y autoevaluación</span><h1 id="title-a6" tabindex="-1">Lo que aprendí y mi siguiente paso</h1><p class="lead">Ya revisaste tus siete retos. Reflexiona sobre tu aprendizaje. Puedes indicar lo que aún necesitas reforzar; no es necesario declarar que dominas todos los contenidos.</p></div>
+        <div class="grid">
+          <div class="card"><svg class="illus" role="img" aria-labelledby="r1cm-t r1cm-d" viewBox="0 0 640 150" style="max-width:640px"><title id="r1cm-t">Mapa de ideas de la reacción química</title><desc id="r1cm-d">Los reactivos, a la izquierda, se transforman mediante una flecha en productos, a la derecha. La conservación indica que hay igual número de átomos de cada elemento a ambos lados.</desc><rect x="1" y="1" width="638" height="148" rx="12" fill="#fff" stroke="#c7d3ec"/><rect x="30" y="20" width="180" height="48" rx="10" fill="#eaf1ff" stroke="#112758" stroke-width="2"/><text x="120" y="50" text-anchor="middle" font-size="16" font-weight="700" fill="#112758">Reactivos</text><g class="pulse"><line x1="225" y1="44" x2="407" y2="44" stroke="#112758" stroke-width="3"/><polygon points="415,44 403,37 403,51" fill="#112758"/></g><text x="320" y="34" text-anchor="middle" font-size="12" font-weight="500" fill="#112758">se transforman</text><rect x="430" y="20" width="180" height="48" rx="10" fill="#ffd9d2" stroke="#112758" stroke-width="2"/><text x="520" y="50" text-anchor="middle" font-size="16" font-weight="700" fill="#112758">Productos</text><rect x="160" y="96" width="320" height="40" rx="10" fill="#fff" stroke="#112758" stroke-width="2" stroke-dasharray="6 4"/><text x="320" y="121" text-anchor="middle" font-size="14" font-weight="700" fill="#112758">Conservación: mismos átomos en ambos lados</text><line x1="120" y1="68" x2="200" y2="96" stroke="#112758" stroke-width="2"/><line x1="520" y1="68" x2="440" y2="96" stroke="#112758" stroke-width="2"/></svg></div><div class="card"><h2>Ideas para recordar</h2><ol><li>Los <strong>reactivos</strong> están a la izquierda; los <strong>productos</strong>, a la derecha.</li><li>El <strong>coeficiente</strong> indica cuántas unidades de una fórmula hay; el <strong>subíndice</strong> indica cuántos átomos de un elemento contiene cada unidad.</li><li>Una ecuación balanceada conserva el número de átomos de cada elemento.</li><li>Podemos comprobar el balance contando átomos en ambos lados.</li></ol></div>
+          <div class="card"><h2>Mi autoevaluación</h2><p class="minor">Marca solo lo que consideres que ya puedes hacer. Puedes cambiar tus respuestas después.</p><div class="checkline"><input type="checkbox" id="self1"><label for="self1">Puedo identificar reactivos y productos.</label></div><div class="checkline"><input type="checkbox" id="self2"><label for="self2">Puedo distinguir coeficientes de subíndices.</label></div><div class="checkline"><input type="checkbox" id="self3"><label for="self3">Puedo contar átomos en una ecuación sencilla.</label></div><div class="checkline"><input type="checkbox" id="self4"><label for="self4">Puedo explicar por qué se conserva cada elemento en un balance.</label></div><div class="checkline"><input type="checkbox" id="self0"><label for="self0">Todavía necesito practicar varios de estos conceptos.</label></div></div>
+        </div>
+        <div class="card" style="margin-top:19px"><h2>Un minuto de reflexión</h2><label for="reflection">¿Qué parte te resultó más difícil y qué apoyo te ayudó a entenderla?</label><textarea id="reflection" maxlength="1300" placeholder="Por ejemplo: confundía el coeficiente con el subíndice, pero el conteo de átomos me ayudó..."></textarea><p class="minor">Tu respuesta permanece en este navegador. No se envía automáticamente a nadie. Si quieres compartirla con tu docente, descarga el resumen de aprendizaje.</p>
+        <div class="actions"><button type="button" id="finishJourney" class="btn primary">Finalizar mi recorrido guiado</button><button type="button" id="downloadReport" class="btn secondary">Descargar mi resumen (.txt)</button><button type="button" id="printResource" class="btn secondary">Imprimir / guardar como PDF</button><button type="button" id="resetQuiz" class="btn danger">Reiniciar mis retos</button></div></div>
+        <div id="finishFeedback" class="feedback" role="status" aria-live="polite" hidden></div>
+        <div class="info"><strong>¿Qué sigue?</strong>Con estos conocimientos podrás abordar el RED 2, donde modificarás coeficientes para balancear ecuaciones por tanteo y justificar tus decisiones.</div>
+        <div class="bottom-controls"><button class="btn secondary" type="button" data-go="a5">← Revisar mis avances</button><button class="btn soft" type="button" data-go="a0">Volver al inicio</button></div>
+      </section>
+    </main>
+    <footer>
+      <strong>RED 1 · Diseño instruccional inclusivo · IED El Parque · 2026.</strong> Funciona sin internet, no incluye analíticas ni remite datos a servidores. Las opciones de accesibilidad requieren validación con usuarios y tecnologías de apoyo.
+      <details><summary>Fundamentos curriculares y pedagógicos</summary><p>IED El Parque (2026), <em>Plan de Área de Ciencias Naturales y Educación Ambiental</em>, Química décimo, Unidad 3, pp. 48–50. Universidad Tecnológica de Bolívar (2024), <em>Diseño Universal para el Aprendizaje</em>, pautas de DUA 2.0, pp. 13–18. Bernaschina, D. (2021), <em>Interacción pedagógica en las TIC: mediación inclusiva en el aula virtual</em>, <em>Étic@net</em>, 21(1), 171–192. DOI: 10.30827/eticanet.v21i1.15978.</p></details>
+    </footer>
+  </div>
+</div>
+<script>
+(function(){'use strict';
+  const $=id=>document.getElementById(id);
+  const screenIds=['a0','a1','a2','a3','a4','a5','a6'];
+  const parts={
+    reactives:['Reactivos','En este ejemplo son 2 H₂ y O₂. Aparecen a la izquierda de la flecha; representan las sustancias que reaccionan.'],
+    products:['Productos','En este ejemplo el producto es 2 H₂O. Aparece a la derecha de la flecha; representa el agua que se forma.'],
+    coefficient:['Coeficiente','Es el número que se coloca delante de una fórmula. En 2 H₂O, el 2 inicial representa dos moléculas de agua y multiplica todos los átomos de la fórmula. Si no aparece número, se entiende 1.'],
+    subscript:['Subíndice','Es el número pequeño que está dentro de una fórmula. En H₂O, el ₂ indica dos átomos de H por molécula; como O no tiene subíndice visible, hay un átomo de O. No se cambian los subíndices para balancear.'],
+    arrow:['Flecha','La flecha se lee como «produce» o «se transforma en». Separa los reactivos, a la izquierda, de los productos, a la derecha.']
+  };
+  const questions=[
+    {label:'En 2 H₂ + O₂ → 2 H₂O, ¿cuáles son los reactivos?',opts:['H₂O solamente.','H₂ y O₂.','H₂ y H₂O.'],ok:1,hint:'Busca lo que aparece a la izquierda de la flecha.',why:'H₂ y O₂ son las sustancias de partida. En la ecuación aparecen a la izquierda de la flecha.',wrong:['H₂O está a la derecha de la flecha, por lo tanto es el producto.','', 'H₂O es el producto; no pertenece al grupo de reactivos.']},
+    {label:'¿Qué representa la flecha (→) en una ecuación química?',opts:['Que los reactivos se transforman en productos.','Que las sustancias se mezclan sin cambiar.','Que los productos se escriben antes que los reactivos.'],ok:0,hint:'Piensa en lo que ocurre entre «antes» y «después».',why:'La flecha indica el sentido de la representación: reactivos → productos.',wrong:['','Mezclar no implica siempre una reacción química. La flecha expresa una transformación.','Los reactivos se escriben antes de la flecha y los productos después.']},
+    {label:'En la expresión 3 CO₂, ¿qué indica el número 3 situado delante de CO₂?',opts:['Tres átomos de oxígeno por molécula.','Tres elementos químicos diferentes.','Tres moléculas de CO₂.'],ok:2,hint:'El número grande delante de la fórmula es un coeficiente.',why:'El 3 es un coeficiente: representa tres moléculas de dióxido de carbono. Cada molécula sigue teniendo un átomo de C y dos de O.',wrong:['Los átomos de oxígeno por molécula se indican mediante el subíndice ₂.','CO₂ contiene dos elementos: carbono y oxígeno.','']},
+    {label:'¿Cuántos átomos de hidrógeno y oxígeno hay en una molécula de H₂O?',opts:['2 de H y 1 de O.','1 de H y 2 de O.','2 de H y 2 de O.'],ok:0,hint:'El subíndice pequeño solo afecta al símbolo que lo precede.',why:'H₂O tiene dos átomos de H y uno de O. El oxígeno no tiene subíndice escrito: se interpreta 1.',wrong:['','El subíndice ₂ está unido a H, no a O.','No aparece subíndice después de O: solo hay un átomo de oxígeno.']},
+    {label:'En 2 H₂ + O₂ → 2 H₂O, ¿cuántos átomos de oxígeno hay en los reactivos?',opts:['Uno.','Dos.','Cuatro.'],ok:1,hint:'Mira O₂: hay una molécula que contiene dos átomos de oxígeno.',why:'En los reactivos aparece una molécula de O₂: contiene dos átomos de oxígeno. A la derecha, 2 H₂O también contiene dos átomos de O.',wrong:['En O₂, el subíndice indica dos átomos de oxígeno.','','El coeficiente 2 de H₂ no multiplica el O₂, que es otra sustancia.']},
+    {label:'Al balancear una ecuación química, ¿qué debemos conservar?',opts:['Solo el número de moléculas de cada lado.','El color de todas las sustancias.','El número de átomos de cada elemento en ambos lados.'],ok:2,hint:'En una reacción, los átomos se reorganizan, pero no desaparecen.',why:'La ley de conservación de la masa exige conservar los átomos de cada elemento. Para balancear se ajustan coeficientes, no subíndices.',wrong:['No es necesario conservar el número de moléculas, sino el de átomos de cada elemento.','El color no es el criterio para balancear una ecuación.','']},
+    {label:'¿La ecuación Fe + O₂ → Fe₂O₃ está balanceada?',opts:['Sí, porque aparece hierro y oxígeno en ambos lados.','No, porque Fe y O tienen conteos diferentes entre reactivos y productos.','Sí, porque todos los símbolos están bien escritos.'],ok:1,hint:'Cuenta por separado: Fe = 1 frente a 2; O = 2 frente a 3.',why:'No está balanceada: a la izquierda hay 1 Fe y 2 O, y a la derecha hay 2 Fe y 3 O. Se debe ajustar mediante coeficientes.',wrong:['No basta con tener los mismos elementos: hay que conservar su cantidad de átomos.','','Una fórmula bien escrita no garantiza que la ecuación esté balanceada.']}
+  ];
+  const KEY='ied-el-parque-red1-v2';
+  const OLD_KEY='ied-el-parque-red1-v1';
+  const state={
+    screen:'a0',question:0,started:false,diagnostics:{ice:null,rust:null},
+    conceptAnswered:false,conceptChoice:null,symbolAnswered:false,symbolChoice:null,visitedParts:[],
+    answers:questions.map(()=>({done:false,mastered:false,attempts:0,hint:false,choice:null})),
+    reviewConfirmed:false,finished:false,contrast:false,plain:false,scale:1
+  };
+  const stageNames={a0:'Inicio',a1:'Diagnóstico',a2:'Conceptos',a3:'Lenguaje químico',a4:'Siete retos',a5:'Revisión de resultados',a6:'Autoevaluación'};
+  const stageHelp={
+    a0:'Pulsa «Comenzar el recorrido» para desbloquear el diagnóstico.',
+    a1:'Responde y comprueba las dos preguntas diagnósticas; no necesitas acertarlas.',
+    a2:'Responde la comprobación de conceptos y lee la explicación.',
+    a3:'Explora al menos tres partes de la ecuación y responde la comprobación.',
+    a4:'Realiza los siete retos en orden y revisa sus explicaciones; no necesitas acertarlos todos.',
+    a5:'Revisa el resumen de los retos y confirma la revisión.',
+    a6:'Elige una opción de autoevaluación y escribe una reflexión para terminar.'
+  };
+  const $all=selector=>[...document.querySelectorAll(selector)];
+  function completed(){return state.answers.filter(a=>a.done).length;}
+  function mastered(){return state.answers.filter(a=>a.mastered).length;}
+  function finishedStage(id){
+    switch(id){
+      case 'a0':return state.started;
+      case 'a1':return state.diagnostics.ice!==null&&state.diagnostics.rust!==null;
+      case 'a2':return state.conceptAnswered;
+      case 'a3':return state.symbolAnswered&&state.visitedParts.length>=3;
+      case 'a4':return completed()===questions.length;
+      case 'a5':return state.reviewConfirmed;
+      case 'a6':return state.finished;
+      default:return false;
+    }
+  }
+  function available(id){
+    const index=screenIds.indexOf(id);
+    return index<=0||screenIds.slice(0,index).every(finishedStage);
+  }
+  function firstPending(){return screenIds.find(s=>!finishedStage(s))||'a6';}
+  function setFeedback(el,title,message,ok){el.hidden=false;el.classList.toggle('review',!ok);el.replaceChildren();const strong=document.createElement('strong');strong.textContent=title;const span=document.createElement('span');span.textContent=message;el.append(strong,span);}
+  function showBlocked(target,custom){
+    const pending=firstPending();
+    const el=$('navigationNotice');
+    el.replaceChildren();
+    const strong=document.createElement('strong');strong.textContent='Etapa aún bloqueada';
+    const note=document.createElement('span');note.textContent=custom||('Para acceder a «'+stageNames[target]+'», completa antes «'+stageNames[pending]+'». '+stageHelp[pending]);
+    el.append(strong,note);el.hidden=false;el.focus({preventScroll:true});el.scrollIntoView({block:'start',behavior:'instant'});
+  }
+  function updateBars(){
+    const n=completed(),steps=screenIds.filter(finishedStage).length;
+    $('quizCount').textContent=n+' de '+questions.length+' retos completados · '+mastered()+' acertados';
+    $('quizProgress').setAttribute('aria-valuenow',String(n));$('quizProgressFill').style.width=(n/questions.length*100)+'%';
+    $('reviewCounter').textContent=n+' / '+questions.length+' completados · '+mastered()+' acertados';
+    $('reviewProgress').setAttribute('aria-valuenow',String(n));$('reviewProgressFill').style.width=(n/questions.length*100)+'%';
+    $('stageCounter').textContent=steps+' de 7';
+    $('stageProgress').setAttribute('aria-valuenow',String(steps));$('stageProgressFill').style.width=(steps/7*100)+'%';
+    $('stageHint').textContent=state.finished?'¡Recorrido terminado! Puedes repasar cuando quieras.':stageHelp[firstPending()];
+    $all('[data-screen]').forEach(b=>{
+      const id=b.dataset.screen,locked=!available(id),done=finishedStage(id),active=id===state.screen;
+      b.classList.toggle('locked',locked);b.classList.toggle('finished',done);b.classList.toggle('active',active);
+      b.setAttribute('data-locked',String(locked));
+      if(active)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');
+      const badge=b.querySelector('.stage-state')||document.createElement('span');
+      badge.className='stage-state';badge.textContent=locked?'🔒':done?'✓':active?'En curso':'Pendiente';
+      badge.setAttribute('aria-hidden','true');if(!badge.parentElement)b.append(badge);
+      const basic=b.querySelector('.num')?.nextSibling?.textContent||stageNames[id];
+      b.setAttribute('aria-label',stageNames[id]+': '+(locked?'bloqueada; pulsa para ver cómo desbloquearla':done?'completada':'disponible'));
+      b.title=locked?('Bloqueada. '+stageHelp[firstPending()]):'';
+    });
+    $('diagnosticHint').textContent=finishedStage('a1')?'Las dos preguntas diagnósticas ya están registradas. Ahora puedes estudiar los conceptos.':stageHelp.a1;
+    $('symbolHint').textContent='Partes exploradas: '+state.visitedParts.length+' de 5 · Comprobación: '+(state.symbolAnswered?'realizada':'pendiente')+'. Para avanzar necesitas al menos tres partes y un intento en la comprobación.';
+    $('questionGateHint').textContent=state.answers[state.question].done?'Reto completado. Puedes avanzar o volver a repasar.':'Responde y revisa la explicación de este reto antes de pasar al siguiente.';
+    $('nextQuestion').setAttribute('data-locked',String(!state.answers[state.question].done));
+  }
+  function showScreen(id){
+    if(!screenIds.includes(id))return false;
+    if(!available(id)){showBlocked(id);return false;}
+    $('navigationNotice').hidden=true;
+    state.screen=id;
+    screenIds.forEach(s=>{$('screen-'+s).hidden=(s!==id);});
+    if(id==='a3'){
+      if(!state.visitedParts.includes('reactives'))state.visitedParts.push('reactives');
+      renderCheckpoint('symbol');
+    }
+    if(id==='a2')renderCheckpoint('concept');
+    if(id==='a1')renderDiagnostics();
+    if(id==='a4')renderQuestion();
+    if(id==='a5')renderReview();
+    if(id==='a6')renderFinish();
+    updateBars();persist();
+    window.scrollTo({top:0,behavior:'instant'});
+    const title=$('screen-'+id).querySelector('h1');
+    if(title){title.setAttribute('tabindex','-1');title.focus({preventScroll:true});}else $('main').focus({preventScroll:true});
+    return true;
+  }
+  function restore(){
+    try{
+      const fresh=localStorage.getItem(KEY),old=fresh?null:localStorage.getItem(OLD_KEY);
+      const s=JSON.parse(fresh||old||'null');if(!s)return;
+      const legacy=!fresh&&!!old;
+      if(Array.isArray(s.answers)&&s.answers.length===questions.length)s.answers.forEach((a,i)=>{
+        if(a&&typeof a==='object'){
+          state.answers[i].done=a.done===true;
+          state.answers[i].mastered=a.mastered===true||(legacy&&a.done===true);
+          state.answers[i].attempts=Math.max(0,Math.min(1000,Number(a.attempts)||0));
+          state.answers[i].hint=a.hint===true;
+          state.answers[i].choice=Number.isInteger(a.choice)?a.choice:null;
+        }
+      });
+      if(!legacy){
+        state.started=s.started===true;
+        for(const type of ['ice','rust'])if(s.diagnostics&&typeof s.diagnostics[type]==='string')state.diagnostics[type]=s.diagnostics[type];
+        state.conceptAnswered=s.conceptAnswered===true;state.conceptChoice=s.conceptChoice||null;
+        state.symbolAnswered=s.symbolAnswered===true;state.symbolChoice=s.symbolChoice||null;
+        state.visitedParts=Array.isArray(s.visitedParts)?s.visitedParts.filter(v=>Object.hasOwn(parts,v)):[];
+        state.reviewConfirmed=s.reviewConfirmed===true;state.finished=s.finished===true;
+      }
+      if(typeof s.reflection==='string')$('reflection').value=s.reflection.slice(0,1300);
+      if(Array.isArray(s.self))s.self.forEach((v,i)=>{if($('self'+i))$('self'+i).checked=!!v;});
+      if(legacy&&Array.isArray(s.self))s.self.forEach((v,i)=>{if($('self'+(i+1)))$('self'+(i+1)).checked=!!v;});
+    }catch(e){/* Persistencia opcional: el recurso funciona sin ella. */}
+  }
+  function persist(){
+    try{localStorage.setItem(KEY,JSON.stringify({
+      started:state.started,diagnostics:state.diagnostics,
+      conceptAnswered:state.conceptAnswered,conceptChoice:state.conceptChoice,
+      symbolAnswered:state.symbolAnswered,symbolChoice:state.symbolChoice,visitedParts:state.visitedParts,
+      answers:state.answers,reviewConfirmed:state.reviewConfirmed,finished:state.finished,
+      reflection:$('reflection').value,self:[0,1,2,3,4].map(i=>$('self'+i).checked)
+    }));}catch(e){/* Persistencia opcional: el recurso funciona sin ella. */}
+  }
+  function renderDiagnostics(){for(const [type,val] of Object.entries(state.diagnostics)){
+    if(val===null)continue;
+    let input=$('diagnostic-'+type).querySelector('input[value="'+val+'"]');if(input)input.checked=true;
+    const correct=type==='ice'?'physical':'chemical';
+    const msg=type==='ice'?'El hielo cambia de estado, pero sigue siendo agua: no se forma una sustancia nueva.':'La herrumbre se forma por reacciones del hierro con componentes del entorno; aparecen nuevas sustancias.';
+    setFeedback($(type+'-feedback'),val===correct?'¡Correcto!':'Revisemos juntos',msg,val===correct);
+  }}
+  function bindDiagnostic(type,correct){
+    $('diagnostic-'+type).addEventListener('submit',event=>{
+      event.preventDefault();const val=event.currentTarget.querySelector('input[type=radio]:checked');
+      if(!val){setFeedback($(type+'-feedback'),'Selecciona una opción','Elige una respuesta para revisar la explicación.',false);return;}
+      state.diagnostics[type]=val.value;renderDiagnostics();persist();updateBars();
+    });
+  }
+  bindDiagnostic('ice','physical');bindDiagnostic('rust','chemical');
+  function renderCheckpoint(type){
+    const val=type==='concept'?state.conceptChoice:state.symbolChoice;
+    const answered=type==='concept'?state.conceptAnswered:state.symbolAnswered;
+    const form=$(type+'Check'),f=$(type+'Feedback');
+    if(val){const input=form.querySelector('input[value="'+val+'"]');if(input)input.checked=true;}
+    if(answered){
+      const right=type==='concept'?val==='right':val==='molecules';
+      const msg=type==='concept'?'Los productos aparecen a la derecha de la flecha, después de los reactivos.':'En 2 H₂O, el coeficiente 2 representa dos moléculas de agua y multiplica los átomos de toda la fórmula.';
+      setFeedback(f,right?'¡Correcto! Actividad registrada.':'Explicación revisada. Actividad registrada.',msg,right);
+    }
+  }
+  function bindCheckpoint(type){
+    $(type+'Check').addEventListener('submit',event=>{
+      event.preventDefault();const val=event.currentTarget.querySelector('input[type=radio]:checked');
+      const f=$(type+'Feedback');
+      if(!val){setFeedback(f,'Falta una respuesta','Selecciona una opción y pulsa comprobar.',false);return;}
+      if(type==='concept'){state.conceptChoice=val.value;state.conceptAnswered=true;}
+      else{state.symbolChoice=val.value;state.symbolAnswered=true;}
+      renderCheckpoint(type);updateBars();persist();
+    });
+  }
+  bindCheckpoint('concept');bindCheckpoint('symbol');
+  $all('[data-part]').forEach(btn=>btn.addEventListener('click',()=>{
+    $all('[data-part]').forEach(other=>other.setAttribute('aria-pressed',String(other===btn)));
+    const part=btn.dataset.part,[title,desc]=parts[part];
+    if(!state.visitedParts.includes(part))state.visitedParts.push(part);
+    const strong=document.createElement('strong');strong.textContent=title;
+    const span=document.createElement('span');span.textContent=desc;
+    $('partExplanation').replaceChildren(strong,span);
+    updateBars();persist();
+  }));
+  function questionFeedback(q,a){
+    if(a.done){
+      setFeedback($('quizFeedback'),a.mastered?'¡Correcto! Reto completado.':'Explicación revisada. Reto completado.',q.why,true);
+    }else if(a.attempts>0&&a.choice!==null){
+      setFeedback($('quizFeedback'),'Aún puedes intentarlo otra vez.',(q.wrong[a.choice]||'Revisa los conceptos.')+' Explicación correcta: '+q.why+' Puedes volver a intentar o marcar el reto como revisado.',false);
+    }else $('quizFeedback').hidden=true;
+  }
+  function renderQuestion(){
+    const i=state.question,q=questions[i],a=state.answers[i];
+    $('questionNumber').textContent='Reto '+(i+1)+' de '+questions.length;
+    $('questionStatus').textContent=a.done?(a.mastered?'Correcto':'Revisado'):'Por realizar';
+    $('questionStatus').classList.toggle('done',a.done);$('quizLegend').textContent=q.label;
+    $('quizOptions').replaceChildren();
+    q.opts.forEach((label,k)=>{
+      const item=document.createElement('label');item.className='choice';
+      const inp=document.createElement('input');inp.type='radio';inp.name='quizAnswer';inp.value=String(k);
+      inp.checked=a.choice===k;inp.disabled=a.mastered;
+      const span=document.createElement('span');span.textContent=label;
+      item.append(inp,span);$('quizOptions').append(item);
+    });
+    $('checkAnswer').disabled=a.mastered;
+    $('checkAnswer').textContent=a.mastered?'Respuesta correcta registrada':a.done?'Reintentar para reforzar':'Comprobar respuesta';
+    $('prevQuestion').disabled=i===0;
+    $('nextQuestion').textContent=i===questions.length-1?'Revisar mis avances →':'Siguiente reto →';
+    $('showHint').setAttribute('aria-expanded',String(a.hint));
+    $('showHint').textContent=a.hint?'Ocultar pista':'Necesito una pista';
+    $('hintPanel').hidden=!a.hint;$('hintPanel').textContent=q.hint;
+    questionFeedback(q,a);
+    const canAck=a.attempts>0&&!a.done&&!a.mastered;
+    $('ackExplanation').hidden=!canAck;
+    if(canAck)$('ackExplanation').textContent='He leído la explicación correcta: completar este reto';
+    const notice=$('questionGateHint');
+    notice.textContent=a.done?'Reto completado. Puedes avanzar o volver a repasar.':canAck?'Puedes volver a intentarlo o completar el reto tras revisar la explicación correcta.':'Primero selecciona una respuesta y compruébala para avanzar.';
+    updateBars();
+  }
+  $('quizForm').addEventListener('submit',function(event){
+    event.preventDefault();const q=questions[state.question],a=state.answers[state.question];
+    if(a.mastered)return;
+    const chosen=this.querySelector('input[name=quizAnswer]:checked');
+    if(!chosen){setFeedback($('quizFeedback'),'Selecciona una opción','Elige una respuesta o pide una pista antes de comprobar.',false);return;}
+    const val=Number(chosen.value);a.choice=val;a.attempts++;
+    if(val===q.ok){a.mastered=true;a.done=true;}
+    renderQuestion();persist();
+  });
+  $('ackExplanation').addEventListener('click',()=>{
+    const a=state.answers[state.question];
+    if(a.attempts<1||a.done)return;
+    a.done=true;a.mastered=false;
+    renderQuestion();persist();
+  });
+  $('showHint').addEventListener('click',function(){
+    const a=state.answers[state.question];a.hint=!a.hint;
+    $('hintPanel').hidden=!a.hint;this.setAttribute('aria-expanded',String(a.hint));
+    this.textContent=a.hint?'Ocultar pista':'Necesito una pista';
+    if(a.hint)$('hintPanel').textContent=questions[state.question].hint;
+    persist();
+  });
+  $('prevQuestion').addEventListener('click',()=>{
+    if(state.question>0){state.question--;renderQuestion();$('quizLegend').setAttribute('tabindex','-1');$('quizLegend').focus({preventScroll:true});}
+  });
+  $('nextQuestion').addEventListener('click',()=>{
+    if(!state.answers[state.question].done){
+      showBlocked('a4','Antes de pasar al siguiente reto, elige una respuesta y compruébala. Si no aciertas, puedes reintentar o revisar la explicación y marcar este reto como completado.');return;
+    }
+    if(state.question===questions.length-1){showScreen('a5');return;}
+    state.question++;renderQuestion();persist();
+    $('quizLegend').setAttribute('tabindex','-1');$('quizLegend').focus({preventScroll:true});
+  });
+  function renderReview(){
+    const n=completed(),good=mastered();
+    $('reviewHeading').textContent=n===questions.length?'¡Terminaste la práctica!':'Tu aprendizaje sigue en marcha';
+    $('reviewSummary').textContent='Participación: '+n+' de '+questions.length+' retos completados. Dominio demostrado: '+good+' respuestas correctas. Puedes volver a cada reto.';
+    $('reviewList').replaceChildren();
+    questions.forEach((q,i)=>{
+      const a=state.answers[i];const art=document.createElement('article');art.className='review-item';
+      const title=document.createElement('strong');title.textContent=(i+1)+'. '+q.label;
+      const badge=document.createElement('span');badge.className='status'+(a.done?' done':'');
+      badge.textContent=a.mastered?'Correcto':a.done?'Explicación revisada':'Pendiente';badge.style.marginTop='8px';
+      const p=document.createElement('p');p.textContent=a.done?q.why:'Completa este reto para continuar.';
+      const meta=document.createElement('p');meta.className='minor';meta.textContent='Intentos: '+a.attempts+' · Pista: '+(a.hint?'utilizada':'no utilizada');
+      const btn=document.createElement('button');btn.type='button';btn.className='btn secondary';btn.textContent='Revisar reto '+(i+1);
+      btn.addEventListener('click',()=>{state.question=i;showScreen('a4');});
+      art.append(title,badge,p,meta,btn);$('reviewList').append(art);
+    });
+    $('confirmReview').textContent=state.reviewConfirmed?'Revisión confirmada ✓':'He revisado mis resultados';
+    $('reviewFeedback').hidden=!state.reviewConfirmed;
+    if(state.reviewConfirmed)setFeedback($('reviewFeedback'),'Revisión completada','Ahora puedes continuar a la autoevaluación.',true);
+    updateBars();
+  }
+  $('confirmReview').addEventListener('click',()=>{
+    if(completed()!==questions.length)return;
+    state.reviewConfirmed=true;renderReview();persist();
+  });
+  function renderFinish(){
+    $('finishFeedback').hidden=!state.finished;
+    if(state.finished)setFeedback($('finishFeedback'),'¡Recorrido completo!','Has completado las siete etapas. Puedes descargar tu resumen, repasar conceptos o volver a cualquier reto.',true);
+    updateBars();
+  }
+  function invalidateFinish(){state.finished=false;$('finishFeedback').hidden=true;updateBars();persist();}
+  $('reflection').addEventListener('input',invalidateFinish);
+  [0,1,2,3,4].forEach(i=>$('self'+i).addEventListener('change',invalidateFinish));
+  $('finishJourney').addEventListener('click',()=>{
+    const chosen=[0,1,2,3,4].some(i=>$('self'+i).checked),written=$('reflection').value.trim();
+    if(!chosen||written.length<15){
+      setFeedback($('finishFeedback'),'Completa tu reflexión',(!chosen?'Marca al menos una opción de autoevaluación, incluso «Todavía necesito practicar». ':'')+(written.length<15?'Escribe al menos 15 caracteres sobre lo que aprendiste o necesitas reforzar.':''),false);
+      $('finishFeedback').scrollIntoView({block:'center',behavior:'instant'});return;
+    }
+    state.finished=true;renderFinish();persist();
+  });
+  $('downloadReport').addEventListener('click',function(){
+    const lines=[
+      'RED 1 · Explorando las reacciones químicas · Recorrido guiado',
+      'IED El Parque · Química décimo',
+      'Generado localmente: '+new Date().toLocaleString('es-CO'),'',
+      'Etapas completadas: '+screenIds.filter(finishedStage).length+'/7',
+      'Retos realizados y revisados: '+completed()+'/'+questions.length,
+      'Retos acertados: '+mastered()+'/'+questions.length,'',
+      ...questions.flatMap((q,i)=>{const a=state.answers[i];return[
+        (i+1)+'. '+q.label,
+        a.mastered?'Resultado: correcto':a.done?'Resultado: explicación revisada':'Resultado: pendiente',
+        'Intentos: '+a.attempts+'; pista: '+(a.hint?'sí':'no'),a.done?'Explicación: '+q.why:'',''];
+      }),
+      'AUTOEVALUACIÓN',
+      ...[0,1,2,3,4].map(i=>($('self'+i).checked?'[X] ':'[ ] ')+$('self'+i).labels[0].textContent.trim()),
+      '', 'REFLEXIÓN',$('reflection').value.trim()||'(sin respuesta)','',
+      'La finalización acredita participación en el recorrido, no dominio pleno ni eficacia pedagógica probada.'
+    ];
+    const blob=new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'});
+    const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Mi_resumen_RED1_Quimica.txt';
+    document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+  });
+  $('printResource').addEventListener('click',()=>window.print());
+  $('resetQuiz').addEventListener('click',()=>{
+    if(!window.confirm('¿Reiniciar el recorrido guiado? Se borrarán los intentos, la autoevaluación y las respuestas guardadas localmente.'))return;
+    state.started=false;state.diagnostics={ice:null,rust:null};state.conceptAnswered=false;state.conceptChoice=null;
+    state.symbolAnswered=false;state.symbolChoice=null;state.visitedParts=[];
+    state.answers=questions.map(()=>({done:false,mastered:false,attempts:0,hint:false,choice:null}));
+    state.reviewConfirmed=false;state.finished=false;state.question=0;
+    ['ice','rust'].forEach(which=>{
+      $('diagnostic-'+which).reset();$(which+'-feedback').hidden=true;
+    });
+    $('conceptCheck').reset();$('conceptFeedback').hidden=true;
+    $('symbolCheck').reset();$('symbolFeedback').hidden=true;
+    $('reflection').value='';[0,1,2,3,4].forEach(i=>$('self'+i).checked=false);
+    $all('[data-part]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.part==='reactives')));
+    $('partExplanation').replaceChildren();
+    const st=document.createElement('strong');st.textContent=parts.reactives[0];
+    const p=document.createElement('span');p.textContent=parts.reactives[1];$('partExplanation').append(st,p);
+    persist();showScreen('a0');
+  });
+  $all('[data-go]').forEach(b=>b.addEventListener('click',()=>{
+    const id=b.dataset.go;
+    if(id==='a1'&&state.screen==='a0'&&!state.started){state.started=true;persist();}
+    showScreen(id);
+  }));
+  $all('[data-screen]').forEach(b=>b.addEventListener('click',()=>showScreen(b.dataset.screen)));
+  function setSize(n){state.scale=Math.max(1,Math.min(1.35,Math.round(n*100)/100));document.documentElement.style.setProperty('--scale',String(state.scale));}
+  $('larger').addEventListener('click',()=>setSize(state.scale+.1));
+  $('smaller').addEventListener('click',()=>setSize(state.scale-.1));
+  $('contrast').addEventListener('click',function(){state.contrast=!state.contrast;document.body.classList.toggle('high-contrast',state.contrast);this.setAttribute('aria-pressed',String(state.contrast));});
+  $('plain').addEventListener('click',function(){state.plain=!state.plain;document.body.classList.toggle('plain-view',state.plain);this.setAttribute('aria-pressed',String(state.plain));});
+  restore();updateBars();
+})();
+</script>
+</body>
+</html>
